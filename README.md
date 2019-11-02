@@ -1,17 +1,19 @@
+# LND Regtest
+
 This is a collection of scripts and docker images that can be used to run
 bitcoind and an arbitrary number of lnd instances in a regtest configuration.
 It uses docker-compose + some custom python scripts to create the specified
 number of lnd instances, and connect them via the channel configuration
 specified in `config.yaml`.
 
-# Requirements
+## Requirements
 
 * docker
 * docker-compose
 * python 3.6
 * pipenv
 
-# Usage
+## Usage
 
 Setup environment:
 
@@ -39,7 +41,7 @@ Execute lncli command against specific instance:
 ./scripts/lncli.sh 1 getinfo
 ```
 
-# Configuration
+## Configuration
 
 Modify `config.yaml` to setup your desired network and rerun `start.py` to
 update the network.
