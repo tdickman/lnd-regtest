@@ -8,8 +8,19 @@ services:
       - "8332:8332"
       - "18332:18332"
       - "18333:18333"
+  lnd0:
+    image: "thesisrobot/lnd:v0.8.0-beta"
+    entrypoint: ["lnd"]
+    volumes:
+      - "./data/lnd0:/root/.lnd"
   lnd1:
     image: "thesisrobot/lnd:v0.8.0-beta"
     entrypoint: ["lnd"]
     volumes:
       - "./data/lnd1:/root/.lnd"
+  manager:
+    build: "."
+    volumes:
+      - "./data/lnd0:/mnt/lnd0"
+      - "./data/lnd1:/mnt/lnd1"
+      - "./manager:/app"
