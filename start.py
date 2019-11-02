@@ -5,7 +5,7 @@ from jinja2 import Template
 
 
 def get_config():
-    with open('config/config.yaml', 'r') as f:
+    with open('config.yaml', 'r') as f:
         return yaml.safe_load(f)
 
 

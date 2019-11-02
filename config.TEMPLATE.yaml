@@ -1,4 +1,4 @@
-lnd_instances: 40
+lnd_instances: 5
 
 # Number of coins to deposit into each lnd node
 lnd_deposit_btc: 50
