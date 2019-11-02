@@ -42,7 +42,7 @@ def wait_until_synced(i):
 
 
 def open_channel(source, destination, amount):
-    print('Opening channel from {} to {}'.format(pair[0], pair[1]))
+    print('Opening {} satoshi channel from {} to {}'.format(amount, source, destination))
     lnd.open_channel(l(source), l(destination), amount)
 
 
