@@ -7,7 +7,7 @@ mkdir -p data/
 mkdir -p data/bitcoind/
 cp config/bitcoin.conf data/bitcoind/
 
-END=1
+END=4
 for i in $(seq 0 $END); do
     mkdir -p data/lnd$i/;
     sed 's/NAME/lnd'$i'/g' config/lnd.conf > data/lnd$i/lnd.conf;

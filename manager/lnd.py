@@ -62,8 +62,40 @@ def is_synced(container):
     return get_info(container).synced_to_chain
 
 
+def connect(source_container, dest_container):
+    dest_info = get_info(dest_container)
+
+    channel = get_channel(source_container)
+    macaroon = codecs.encode(open(_macaroon(source_container), 'rb').read(), 'hex')
+    stub = lnrpc.LightningStub(channel)
+    addr = ln.LightningAddress(
+        pubkey=dest_info.identity_pubkey,
+        host=dest_container,
+    )
+    request = ln.ConnectPeerRequest(addr=addr)
+    stub.ConnectPeer(request, metadata=[('macaroon', macaroon)])
+
+
 def open_channel(source_container, dest_container, amount):
     """Open a channel between the 2 specified containers."""
+
+    # source_info = get_info(source_container)
+    dest_info = get_info(dest_container)
+    try:
+        connect(source_container, dest_container)
+    except Exception:
+        # TODO: Catch more specific error
+        pass
+
+    channel = get_channel(source_container)
+    macaroon = codecs.encode(open(_macaroon(source_container), 'rb').read(), 'hex')
+    stub = lnrpc.LightningStub(channel)
+    request = ln.OpenChannelRequest(
+        node_pubkey_string=dest_info.identity_pubkey,
+        local_funding_amount=amount,
+        spend_unconfirmed=True,
+    )
+    stub.OpenChannelSync(request, metadata=[('macaroon', macaroon)])
 
 
 if __name__ == '__main__':
