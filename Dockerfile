@@ -19,5 +19,6 @@ COPY        --from=0 /app/invoices_pb2_grpc.py /modules
 ADD         manager/Pipfile* /tmp/
 RUN         cd /tmp && pipenv install --system --deploy
 COPY         ./manager/ /app/
+COPY        config/config.yaml /
 
 ENTRYPOINT  ["sleep", "400000"]

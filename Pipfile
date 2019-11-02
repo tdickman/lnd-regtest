@@ -4,10 +4,8 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-grpcio = "*"
-googleapis-common-protos = "*"
-python-bitcoinrpc = "*"
 pyyaml = "*"
+"jinja2" = "*"
 
 [dev-packages]
 

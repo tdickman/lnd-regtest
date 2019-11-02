@@ -1,0 +1,18 @@
+lnd_instances: 40
+
+# Number of coins to deposit into each lnd node
+lnd_deposit_btc: 50
+
+# Number of blocks to mine before starting. Note: coins are not spendable for
+# 100 blocks
+premine_blocks: 150
+
+# Create channels between all nodes
+connect_all: true
+connect_all_amount: 1000000
+
+# Create specific channels
+channels:
+  - from: 0
+    to: 2
+    amount: 1000000
