@@ -33,6 +33,12 @@ Stop everything:
 python stop.py
 ```
 
+Execute lncli command against specific instance:
+
+```
+./scripts/lncli.sh 1 getinfo
+```
+
 # Configuration
 
 Modify `config.yaml` to setup your desired network and rerun `start.py` to
