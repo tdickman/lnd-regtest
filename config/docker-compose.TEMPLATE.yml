@@ -1,7 +1,7 @@
 version: '3'
 services:
   bitcoind:
-    image: "arilot/docker-bitcoind:0.17.1"
+    image: {{ bitcoind_image }}
     volumes:
       - "./data/bitcoind:/bitcoin/.bitcoin"
     ports:
@@ -10,7 +10,7 @@ services:
       - "18333:18333"
   {% for container in containers %}
   {{ container }}:
-    image: "thesisrobot/lnd:v0.8.0-beta"
+    image: {{ lnd_image }}
     entrypoint: ["lnd"]
     volumes:
       - "./data/{{ container }}:/root/.lnd"

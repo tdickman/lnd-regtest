@@ -16,3 +16,6 @@ channels:
   - from: 0
     to: 2
     amount: 1000000
+
+bitcoind_image: "arilot/docker-bitcoind:0.17.1"
+lnd_image: "thesisrobot/lnd:v0.8.0-beta"
