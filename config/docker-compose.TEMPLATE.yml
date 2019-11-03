@@ -3,7 +3,7 @@ services:
   bitcoind:
     image: {{ bitcoind_image }}
     volumes:
-      - "./data/bitcoind:/bitcoin/.bitcoin"
+      - "./data/bitcoin.conf:/bitcoin/.bitcoin/bitcoin.conf"
     ports:
       - "8332:8332"
       - "18332:18332"
@@ -13,12 +13,17 @@ services:
     image: {{ lnd_image }}
     entrypoint: ["lnd"]
     volumes:
-      - "./data/{{ container }}:/root/.lnd"
+      - "./data/{{ container }}.conf:/root/.lnd/lnd.conf"
+      - "{{ container }}:/root/.lnd"
   {% endfor %}
   manager:
     build: "."
     volumes:
       {% for container in containers -%}
-      - "./data/{{ container }}:/mnt/{{ container }}"
+      - "{{ container }}:/mnt/{{ container }}"
       {% endfor -%}
       - "./manager:/app"
+volumes:
+  {% for container in containers -%}
+  {{ container }}:
+  {% endfor -%}

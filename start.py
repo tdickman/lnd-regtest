@@ -23,18 +23,16 @@ def _run(command):
 
 def start_docker(config):
     # Cleanup
-    _run('docker-compose down --remove-orphans')
+    _run('docker-compose down --remove-orphans -v')
     _run('docker-compose rm -f')
-    _run('sudo rm -rf data/')
+    _run('rm -rf data/')
 
     # Setup config files
     _run('mkdir -p data/')
-    _run('mkdir -p data/bitcoind/')
-    _run('cp config/bitcoin.conf data/bitcoind/')
+    _run('cp config/bitcoin.conf data/')
 
     for i in range(config['lnd_instances']):
-        _run('mkdir -p data/lnd{}'.format(i))
-        _run("sed 's/NAME/lnd{}/g' config/lnd.conf > data/lnd{}/lnd.conf".format(i, i))
+        _run("sed 's/NAME/lnd{}/g' config/lnd.conf > data/lnd{}.conf".format(i, i))
 
     _run('docker-compose build')
     try:
