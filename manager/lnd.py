@@ -1,3 +1,4 @@
+import time
 import codecs, grpc, os
 import rpc_pb2 as ln, rpc_pb2_grpc as lnrpc
 
@@ -96,6 +97,16 @@ def open_channel(source_container, dest_container, amount):
         spend_unconfirmed=True,
     )
     stub.OpenChannelSync(request, metadata=[('macaroon', macaroon)])
+
+
+def wait_until_synced(container):
+    try:
+        while not is_synced(container):
+            time.sleep(1)
+    # Sometimes connection errors occur - need to find a
+    # better way to handle these
+    except Exception:
+        time.sleep(1)
 
 
 if __name__ == '__main__':

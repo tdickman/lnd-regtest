@@ -1,5 +1,4 @@
 import itertools
-import time
 import yaml
 
 import bitcoind
@@ -25,20 +24,10 @@ def l(i):
     return 'lnd{}'.format(i)
 
 
-def wait_until_synced_all():
+def wait_until_synced_all_lnd():
     # Wait for all containers to fully sync
     for i in range(LND_COUNT):
-        wait_until_synced(i)
-
-
-def wait_until_synced(i):
-    try:
-        while not lnd.is_synced(l(i)):
-            time.sleep(1)
-    # Sometimes connection errors occur - need to find a
-    # better way to handle these
-    except Exception:
-        time.sleep(1)
+        lnd.wait_until_synced(l(i))
 
 
 def open_channel(source, destination, amount):
@@ -49,6 +38,7 @@ def open_channel(source, destination, amount):
 if __name__ == '__main__':
     config = get_config()
     premine_blocks = config['premine_blocks']
+    bitcoind.wait_until_ready()
     bitcoind.mine(premine_blocks)
 
     for i in range(LND_COUNT):
@@ -56,7 +46,7 @@ if __name__ == '__main__':
         lnd.create_wallet(l(i))
 
     print('Waiting for lnd instances to fully sync')
-    wait_until_synced_all()
+    wait_until_synced_all_lnd()
 
     for i in range(LND_COUNT):
         address = lnd.new_address(l(i))
@@ -64,7 +54,7 @@ if __name__ == '__main__':
         bitcoind.send_coins(address, config['lnd_deposit_btc'])
 
     bitcoind.mine(5)
-    wait_until_synced_all()
+    wait_until_synced_all_lnd()
 
     # Open channels
     if config['connect_all']:
@@ -72,12 +62,12 @@ if __name__ == '__main__':
             open_channel(pair[0], pair[1], config['connect_all_amount'])
             if i % 10:
                 bitcoind.mine(1)
-                wait_until_synced_all()
+                wait_until_synced_all_lnd()
 
     for i, channel in enumerate(config['channels']):
         open_channel(channel['from'], channel['to'], channel['amount'])
         if i % 10:
             bitcoind.mine(1)
-            wait_until_synced_all()
+            wait_until_synced_all_lnd()
 
     bitcoind.mine(6)
